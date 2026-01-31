@@ -1,34 +1,45 @@
-import React from 'react';
-import { tv, type VariantProps } from 'tailwind-variants';
+import { cva, type VariantProps } from 'class-variance-authority'; // Importe cva e VariantProps
+import { cn } from '@/lib/utils'; // Certifique-se de que este caminho está correto e que 'cn' existe
 
-const buttonVariants = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2',
-  variants: {
-    variant: {
-      primary: 'bg-primary text-white hover:bg-red-600 focus:ring-primary',
-      secondary: 'bg-secondary text-white hover:bg-teal-600 focus:ring-secondary',
-      outline: 'border border-gray-300 text-gray-700 hover:bg-gray-100 focus:ring-gray-300',
-      ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-300',
+const buttonVariants = cva(
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
+  {
+    variants: {
+      variant: {
+        default: 'bg-mz-blue text-white hover:bg-mz-blue/90',
+        destructive: 'bg-mz-red text-white hover:bg-mz-red/90',
+        outline: 'border border-mz-blue text-mz-blue hover:bg-mz-blue hover:text-white',
+        secondary: 'bg-gray-light text-gray-dark hover:bg-gray-medium',
+        ghost: 'hover:bg-gray-light hover:text-gray-dark',
+        link: 'text-mz-blue underline-offset-4 hover:underline',
+      },
+      size: {
+        default: 'h-10 px-4 py-2',
+        sm: 'h-9 px-3',
+        lg: 'h-11 px-8',
+        icon: 'h-10 w-10',
+      },
     },
-    size: {
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-6 py-3 text-lg',
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
     },
-  },
-  defaultVariants: {
-    variant: 'primary',
-    size: 'md',
-  },
-});
+  }
+);
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-}
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {} // Use VariantProps aqui
 
-export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
-  const Comp = asChild ? 'span' : 'button'; // Ou um componente de Link, se asChild for usado com Next.js Link
+const Button = ({ className, variant, size, ...props }: ButtonProps) => {
   return (
-    <Comp className={buttonVariants({ variant, size, className })} {...props} />
+    <button
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
   );
-}
+};
+
+Button.displayName = 'Button';
+
+export { Button, buttonVariants };

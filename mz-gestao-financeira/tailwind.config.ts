@@ -1,3 +1,4 @@
+// tailwind.config.ts
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -8,34 +9,24 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      // Adicione suas cores personalizadas aqui, se houver
       colors: {
-        primary: '#FF5A5F', // Cor principal inspirada no Airbnb (vermelho/rosa)
-        secondary: '#00A699', // Cor secundária (verde-água)
-        dark: '#222222', // Cor de texto/fundo escuro
-        light: '#FFFFFF', // Cor de fundo claro
-        gray: {
-          50: '#F8F8F8',
-          100: '#EEEEEE',
-          200: '#DDDDDD',
-          300: '#CCCCCC',
-          400: '#BBBBBB',
-          500: '#AAAAAA',
-          600: '#888888',
-          700: '#666666',
-          800: '#444444',
-          900: '#222222',
-        },
-      },
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'], // Exemplo de fonte
-        display: ['Montserrat', 'sans-serif'], // Fonte para títulos
-      },
-      boxShadow: {
-        'airbnb': '0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1)', // Sombra sutil
+        primary: '#FF5A5F', // Exemplo de cor primária (Airbnb-like)
+        secondary: '#00A699', // Exemplo de cor secundária
+        'gray-light': '#F7F7F7',
+        'gray-medium': '#DDDDDD',
+        'gray-dark': '#484848',
+        'mz-blue': '#007BFF', // Exemplo de cor para Mz Gestão Financeira
+        'mz-green': '#28A745',
+        'mz-red': '#DC3545',
       },
     },
   },
   plugins: [],
 };
-
 export default config;

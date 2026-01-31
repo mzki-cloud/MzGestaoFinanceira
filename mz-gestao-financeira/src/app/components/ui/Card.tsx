@@ -1,18 +1,61 @@
-import React from 'react';
-import { tv, type VariantProps } from 'tailwind-variants';
+import { cva, type VariantProps } from 'class-variance-authority'; // Importe cva e VariantProps
+import { cn } from '@/lib/utils'; // Certifique-se de que este caminho está correto
 
-const cardVariants = tv({
-  base: 'bg-white rounded-xl shadow-md overflow-hidden',
-  variants: {
-    // Você pode adicionar variantes aqui para diferentes tipos de cards
-  },
-  defaultVariants: {},
-});
+const cardVariants = cva(
+  'rounded-lg border bg-card text-card-foreground shadow-sm',
+  {
+    variants: {
+      variant: {
+        default: 'bg-white border-gray-medium',
+        primary: 'bg-mz-blue text-white border-mz-blue',
+        secondary: 'bg-gray-light border-gray-medium',
+      },
+      size: {
+        default: 'p-6',
+        sm: 'p-4',
+        lg: 'p-8',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }
+);
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {}
+export interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {} // Use VariantProps aqui
 
-export function Card({ className, ...props }: CardProps) {
-  return (
-    <div className={cardVariants({ className })} {...props} />
-  );
-}
+const Card = ({ className, variant, size, ...props }: CardProps) => (
+  <div className={cn(cardVariants({ variant, size, className }))} {...props} />
+);
+
+Card.displayName = 'Card';
+
+const CardHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
+);
+CardHeader.displayName = 'CardHeader';
+
+const CardTitle = ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  <h3 className={cn('font-semibold leading-none tracking-tight', className)} {...props} />
+);
+CardTitle.displayName = 'CardTitle';
+
+const CardDescription = ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
+  <p className={cn('text-sm text-muted-foreground', className)} {...props} />
+);
+CardDescription.displayName = 'CardDescription';
+
+const CardContent = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('p-6 pt-0', className)} {...props} />
+);
+CardContent.displayName = 'CardContent';
+
+const CardFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('flex items-center p-6 pt-0', className)} {...props} />
+);
+CardFooter.displayName = 'CardFooter';
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
